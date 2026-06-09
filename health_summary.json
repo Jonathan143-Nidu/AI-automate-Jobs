@@ -1,0 +1,155 @@
+{
+  "summary": {
+    "totalFiles": 88,
+    "totalIssues": 32,
+    "totalErrors": 10,
+    "totalWarnings": 22
+  },
+  "issueCategories": {
+    "deadCode": 22,
+    "reactAntiPatterns": 2,
+    "typeSafety": 4,
+    "deprecated": 0,
+    "others": 4
+  },
+  "fileDetails": [
+    {
+      "file": "OptimizationControl.tsx",
+      "errors": 0,
+      "warnings": 5,
+      "majorProblems": []
+    },
+    {
+      "file": "route.ts",
+      "errors": 0,
+      "warnings": 4,
+      "majorProblems": []
+    },
+    {
+      "file": "auth.ts",
+      "errors": 2,
+      "warnings": 0,
+      "majorProblems": [
+        "108:63 - [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.",
+        "113:121 - [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type."
+      ]
+    },
+    {
+      "file": "AnalysisPanel.tsx",
+      "errors": 1,
+      "warnings": 1,
+      "majorProblems": [
+        "27:13 - [react-hooks/set-state-in-effect] Error: Calling setState synchronously within an effect can trigger cascading renders\n\nEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:\n* Update external systems with the latest state from React.\n* Subscribe for updates from some external system, calling setState in a callback function when external state changes.\n\nCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).\n\nC:\\Users\\Thota\\.gemini\\antigravity\\scratch\\airesume.innovcentric.com-main\\components\\builder\\AnalysisPanel.tsx:27:13\n  25 |         // Trigger the transition when analysis successfully finishes\n  26 |         if (prevIsAnalyzing.current === true && isAnalyzing === false && analysisResult) {\n> 27 |             setShowTransition(true);\n     |             ^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect\n  28 |             const timer = setTimeout(() => {\n  29 |                 setShowTransition(false);\n  30 |             }, 3000);"
+      ]
+    },
+    {
+      "file": "useAnalysisLogic.ts",
+      "errors": 1,
+      "warnings": 1,
+      "majorProblems": [
+        "146:29 - [prefer-const] 'fixed' is never reassigned. Use 'const' instead."
+      ]
+    },
+    {
+      "file": "middleware.ts",
+      "errors": 0,
+      "warnings": 2,
+      "majorProblems": []
+    },
+    {
+      "file": "health_check.js",
+      "errors": 2,
+      "warnings": 0,
+      "majorProblems": [
+        "1:12 - [@typescript-eslint/no-require-imports] A `require()` style import is forbidden.",
+        "2:14 - [@typescript-eslint/no-require-imports] A `require()` style import is forbidden."
+      ]
+    },
+    {
+      "file": "page.tsx",
+      "errors": 0,
+      "warnings": 1,
+      "majorProblems": []
+    },
+    {
+      "file": "page.tsx",
+      "errors": 0,
+      "warnings": 1,
+      "majorProblems": []
+    },
+    {
+      "file": "BuilderHeader.tsx",
+      "errors": 0,
+      "warnings": 1,
+      "majorProblems": []
+    },
+    {
+      "file": "InputSection.tsx",
+      "errors": 0,
+      "warnings": 1,
+      "majorProblems": []
+    },
+    {
+      "file": "SettingsModal.tsx",
+      "errors": 0,
+      "warnings": 1,
+      "majorProblems": []
+    },
+    {
+      "file": "UserProfileModal.tsx",
+      "errors": 1,
+      "warnings": 0,
+      "majorProblems": [
+        "39:76 - [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type."
+      ]
+    },
+    {
+      "file": "IntelligenceDashboard.tsx",
+      "errors": 0,
+      "warnings": 1,
+      "majorProblems": []
+    },
+    {
+      "file": "useBuilderState.ts",
+      "errors": 0,
+      "warnings": 1,
+      "majorProblems": []
+    },
+    {
+      "file": "useProfile.ts",
+      "errors": 1,
+      "warnings": 0,
+      "majorProblems": [
+        "41:17 - [react-hooks/set-state-in-effect] Error: Calling setState synchronously within an effect can trigger cascading renders\n\nEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:\n* Update external systems with the latest state from React.\n* Subscribe for updates from some external system, calling setState in a callback function when external state changes.\n\nCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).\n\nC:\\Users\\Thota\\.gemini\\antigravity\\scratch\\airesume.innovcentric.com-main\\hooks\\useProfile.ts:41:17\n  39 |         if (saved) {\n  40 |             try {\n> 41 |                 setProfile(JSON.parse(saved));\n     |                 ^^^^^^^^^^ Avoid calling setState() directly within an effect\n  42 |             } catch (e) {\n  43 |                 console.error('Failed to parse profile', e);\n  44 |             }"
+      ]
+    },
+    {
+      "file": "integrate-prompt.ts",
+      "errors": 0,
+      "warnings": 1,
+      "majorProblems": []
+    },
+    {
+      "file": "ai-service.ts",
+      "errors": 1,
+      "warnings": 0,
+      "majorProblems": [
+        "41:33 - [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type."
+      ]
+    },
+    {
+      "file": "resume-service.ts",
+      "errors": 0,
+      "warnings": 1,
+      "majorProblems": []
+    },
+    {
+      "file": "docx-modifier.ts",
+      "errors": 1,
+      "warnings": 0,
+      "majorProblems": [
+        "96:23 - [@typescript-eslint/no-array-constructor] The array literal notation [] is preferable."
+      ]
+    }
+  ]
+}
