@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Pricing | PrismOps — AI Plans & Packages</title>
-<meta name="description" content="Simple, transparent pricing for PrismOps AI products. Starter, Growth, and Enterprise plans available.">
+<title>Plans & Pricing | PrismOps — AI Plans & Packages</title>
+<meta name="description" content="Simple, transparent pricing. No subscriptions. No auto renewals. for PrismOps AI products. Pro, Ultra, and Titan plans available.">
 <meta property="og:title" content="Pricing | PrismOps — AI Plans & Packages">
-<meta property="og:description" content="Simple, transparent pricing for PrismOps AI products. Starter, Growth, and Enterprise plans available.">
+<meta property="og:description" content="Simple, transparent pricing. No subscriptions. No auto renewals. for PrismOps AI products. Pro, Ultra, and Titan plans available.">
 <meta property="og:url" content="https://prismopss.com/pricing.html">
 <meta property="og:type" content="website">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg width='36' height='36' viewBox='0 0 36 36' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='nlg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23A78BFA'/%3E%3Cstop offset='100%25' stop-color='%2338BDF8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='36' height='36' rx='8' fill='%23FFFFFF'/%3E%3Cline x1='2' y1='18' x2='10' y2='18' stroke='%23CBD5E1' stroke-width='1.5' stroke-linecap='round'/%3E%3Cpolygon points='10,4 10,32 22,18' fill='url(%23nlg)' opacity='0.85'/%3E%3Cpolygon points='10,4 22,18 16,4' fill='%23EDE9FE' opacity='0.6'/%3E%3Cpolygon points='10,4 10,32 22,18' fill='none' stroke='%23A78BFA' stroke-width='0.8'/%3E%3Cline x1='22' y1='18' x2='34' y2='8' stroke='%237C3AED' stroke-width='1.8' stroke-linecap='round'/%3E%3Cline x1='22' y1='18' x2='34' y2='13' stroke='%232563EB' stroke-width='1.8' stroke-linecap='round'/%3E%3Cline x1='22' y1='18' x2='34' y2='18' stroke='%230891B2' stroke-width='1.8' stroke-linecap='round'/%3E%3Cline x1='22' y1='18' x2='34' y2='23' stroke='%23059669' stroke-width='1.8' stroke-linecap='round'/%3E%3Cline x1='22' y1='18' x2='34' y2='28' stroke='%2310B981' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E">
@@ -15,7 +15,7 @@
 <style>
 .pricing-grid{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(3,1fr);
   gap:1.5rem;
   margin-top:4rem;
   align-items:start;
@@ -89,9 +89,68 @@
 .faq-a{font-size:14px;color:var(--muted);line-height:1.65;}
 
 @media(max-width:860px){
-  .pricing-grid{grid-template-columns:1fr;max-width:520px;margin-left:auto;margin-right:auto;}
+  .pricing-grid{grid-template-columns:1fr;max-width:480px;margin-left:auto;margin-right:auto;}
   .faq-grid{grid-template-columns:1fr;}
 }
+
+/* ── PAY AS YOU GO ───────────────────────────────────── */
+.payg-card{
+  border:2px dashed var(--border2);
+  border-radius:20px;padding:2.5rem 2rem;
+  text-align:center;margin-top:2rem;
+  background:var(--bg);
+  transition:border-color 0.3s;
+}
+.payg-card:hover{border-color:var(--violet);}
+.payg-badge{
+  display:inline-block;font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;padding:4px 14px;border-radius:20px;
+  font-weight:700;margin-bottom:1rem;
+  background:rgba(124,58,237,0.1);color:var(--violet);
+  border:1px solid rgba(124,58,237,0.25);
+}
+.payg-title{font-size:26px;font-weight:900;letter-spacing:-1px;margin-bottom:0.5rem;color:var(--ink);}
+.payg-sub{font-size:14px;color:var(--muted);margin-bottom:2rem;line-height:1.6;max-width:520px;margin-left:auto;margin-right:auto;}
+.payg-input-wrap{
+  display:flex;align-items:center;justify-content:center;
+  gap:0;max-width:420px;margin:0 auto 1rem;
+}
+.payg-symbol{
+  background:var(--bg2);border:1.5px solid var(--border2);
+  border-right:none;border-radius:10px 0 0 10px;
+  padding:13px 16px;font-size:18px;font-weight:700;
+  color:var(--ink2);
+}
+.payg-input{
+  flex:1;border:1.5px solid var(--border2);border-left:none;
+  border-radius:0 10px 10px 0;padding:13px 16px;
+  font-size:18px;font-weight:700;color:var(--ink);
+  background:var(--bg);outline:none;font-family:var(--font-sans);
+  transition:border-color 0.2s;
+}
+.payg-input:focus{border-color:var(--violet);}
+.payg-btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--violet);color:#fff;
+  padding:14px 32px;border-radius:40px;
+  font-size:15px;font-weight:700;border:none;cursor:pointer;
+  margin:0 auto;transition:all 0.2s;
+  box-shadow:0 4px 20px rgba(124,58,237,0.3);
+  text-decoration:none;
+}
+.payg-btn:hover{background:#6D28D9;transform:translateY(-2px);box-shadow:0 8px 32px rgba(124,58,237,0.45);}
+.payg-min{font-size:12px;color:var(--muted);margin-bottom:1.25rem;}
+.payg-features{
+  display:flex;flex-wrap:wrap;justify-content:center;
+  gap:10px;margin-bottom:1.5rem;
+}
+.payg-tag{
+  font-size:12px;padding:5px 14px;border-radius:20px;
+  background:var(--bg2);color:var(--ink2);
+  border:1px solid var(--border);
+}
+.payg-trust{font-size:11px;color:var(--muted);margin-top:10px;}
+
 </style>
 </head>
 <body>
@@ -129,7 +188,7 @@
   <div class="page-hero-inner">
     <span class="sec-eyebrow reveal">Pricing</span>
     <h1 class="sec-title reveal" style="font-size:clamp(36px,6vw,68px);letter-spacing:-3px;">Simple, transparent<br>monthly pricing.</h1>
-    <p class="sec-body reveal">No hidden fees. No surprise invoices. Billed monthly — upgrade or cancel anytime.</p>
+    <p class="sec-body reveal">No hidden fees. No surprise invoices. Billed monthly — upgrade or no auto renewal.</p>
   </div>
 </div>
 
@@ -138,99 +197,121 @@
 
     <div class="pricing-grid">
 
-      <!-- STARTER -->
-      <div class="plan reveal">
-        <div class="plan-bar"></div>
-        <div class="plan-name">Starter</div>
-        <div class="plan-price"><span>$</span>200</div>
-        <div class="plan-period">month</div>
-        <p style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:0.5rem;">Perfect for individuals and job seekers getting started with AI-powered career tools.</p>
-        <div class="plan-divider"></div>
-        <ul class="plan-features">
-          <li>Resume AI Maker — generate a polished, ATS-ready resume from your inputs</li>
-          <li>Interview Assistant — AI-coached Q&amp;A practice tailored to your role</li>
-          <li>Full Time job type support</li>
-          <li>Email support</li>
-        </ul>
-        <a href="contact.html" class="plan-cta plan-cta-outline">Get started &rarr;</a>
-      </div>
-
       <!-- GROWTH -->
       <div class="plan plan-popular reveal">
         <div class="plan-bar"></div>
         <div class="plan-badge">&#11088; Most Popular</div>
-        <div class="plan-name">Growth</div>
+        <div class="plan-name">Pro</div>
         <div class="plan-price"><span>$</span>350</div>
-        <div class="plan-period">month</div>
+        <div class="plan-period">one-time &middot; 1 month access</div>
         <p style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:0.5rem;">For professionals who want a complete AI toolkit with automation built in.</p>
         <div class="plan-divider"></div>
         <ul class="plan-features">
-          <li>Everything in Starter</li>
+          <li>Resume AI Maker — generate a polished, ATS-ready resume from your inputs</li>
+          <li>Interview Assistant — AI-coached Q&amp;A practice tailored to your role</li>
           <li class="feat-highlight">Resume AI Maker + Browser Extension — apply faster across job platforms</li>
           <li class="feat-highlight">Interview Assistant — advanced multi-round coaching</li>
           <li class="feat-highlight">Workflow Automation — automate repetitive job application tasks</li>
           <li>Full Time &amp; Contract job types</li>
           <li>Priority email support</li>
         </ul>
-        <a href="contact.html" class="plan-cta plan-cta-primary">Get started &rarr;</a>
+        <a href="https://buy.stripe.com/test_eVqbJ035K5qb9xDf1y4wM02" target="_blank" class="plan-cta plan-cta-primary">Get Pro &rarr;</a>
       </div>
 
       <!-- ENTERPRISE -->
       <div class="plan reveal">
         <div class="plan-bar"></div>
-        <div class="plan-name">Enterprise</div>
+        <div class="plan-name">Ultra</div>
         <div class="plan-price"><span>$</span>500</div>
-        <div class="plan-period">month</div>
+        <div class="plan-period">one-time &middot; 1 month access</div>
         <p style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:0.5rem;">The full suite — for power users and teams who want every advantage AI can offer.</p>
         <div class="plan-divider"></div>
         <ul class="plan-features">
-          <li>Everything in Growth</li>
+          <li>Everything in Pro</li>
           <li class="feat-highlight">Resume AI Maker + Extension + AI Resume Review — get expert-level feedback</li>
           <li class="feat-highlight">Interview Assistant — full preparation suite</li>
           <li class="feat-highlight">Advanced Automation — end-to-end job search automation</li>
           <li class="feat-highlight">All Job Types — Full Time, Contract &amp; Part Time</li>
           <li>Dedicated support &amp; onboarding call</li>
         </ul>
-        <a href="contact.html" class="plan-cta plan-cta-outline">Get started &rarr;</a>
+        <a href="https://buy.stripe.com/test_fZu3cu49OdWH1177z64wM06" target="_blank" class="plan-cta plan-cta-outline">Get Ultra &rarr;</a>
       </div>
 
 
-
-      <!-- AGENCY $2000 -->
-      <div class="plan plan-agency reveal">
+      <!-- TITAN $2000 — 6 MONTHS -->
+      <div class="plan reveal">
         <div class="plan-bar" style="background:linear-gradient(90deg,#7C3AED,#0891B2);"></div>
-        <div class="plan-agency-badge">✦ Agency &amp; Teams</div>
-        <div class="plan-name">Agency</div>
+        <div style="display:inline-block;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:4px 14px;border-radius:20px;font-weight:700;margin-bottom:1.25rem;background:linear-gradient(90deg,#7C3AED,#0891B2);color:#fff;box-shadow:0 2px 14px rgba(124,58,237,0.4);">✦ Best Value</div>
+        <div class="plan-name">Titan</div>
         <div class="plan-price"><span>$</span>2,000</div>
-        <div class="plan-period">month</div>
-        <p style="font-size:14px;line-height:1.6;margin-bottom:0.5rem;">For agencies, HR firms &amp; large teams who need full AI automation at scale with white-label options.</p>
+        <div class="plan-period">one-time &middot; 6 months access</div>
+        <p>Complete AI platform for agencies, HR firms and recruiting teams. One payment covers 6 full months of access.</p>
         <div class="plan-divider"></div>
         <ul class="plan-features">
-          <li>Everything in Enterprise</li>
-          <li class="feat-highlight">Up to 5 team seats — all plans included per seat</li>
-          <li class="feat-highlight">White-label branding — your logo, your domain</li>
-          <li class="feat-highlight">API access — integrate PrismOps into your own platform</li>
-          <li class="feat-highlight">Bulk resume processing — hundreds of CVs at once</li>
-          <li class="feat-highlight">Custom AI training on your company data</li>
+          <li>Everything in Ultra</li>
+          <li class="feat-highlight">5 team seats included</li>
+          <li class="feat-highlight">White-label branding</li>
+          <li class="feat-highlight">API access</li>
+          <li class="feat-highlight">Bulk resume processing</li>
+          <li class="feat-highlight">Custom AI training on your data</li>
           <li>Dedicated account manager</li>
-          <li>99.9% uptime SLA</li>
           <li>Priority phone &amp; video support</li>
-          <li>Custom integrations &amp; onboarding</li>
+          <li>99.9% uptime SLA</li>
+          <li>No auto renewal &middot; no hidden charges</li>
         </ul>
-        <div class="plan-tax-note">+ applicable taxes · cancel anytime</div>
-        <a href="contact.html" class="btn-agency" id="btn-agency">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="22" height="18" rx="2"/><path d="M1 9h22"/></svg>
-          Get Agency — $2,000/mo
-        </a>
-        <div class="stripe-trust" style="color:rgba(255,255,255,0.3);">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          Secured by Stripe
-        </div>
+        <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:4px;">No auto renewal &middot; one-time payment</div>
+        <a href="https://buy.stripe.com/test_3cI3cu49O5qb8tzg5C4wM03" target="_blank" class="plan-cta plan-cta-primary" style="background:linear-gradient(90deg,#7C3AED,#0891B2);border:none;">Get Titan &rarr;</a>
       </div>
-
     </div>
   </div>
 </section>
+  <!-- PAY AS YOU GO -->
+  <div class="container">
+  <div class="payg-card reveal">
+    <div class="payg-badge">✦ Pay-as-you-go</div>
+    <div class="payg-title">Custom Amount</div>
+    <p class="payg-sub">
+      Only pay for what you need. Choose your own amount and get access
+      to PrismOps AI tools pooled across your usage. No plan limits.
+      No commitments. Start from as little as $550.
+    </p>
+
+    <div class="payg-features">
+      <span class="payg-tag">Resume AI Maker</span>
+      <span class="payg-tag">Interview Coach</span>
+      <span class="payg-tag">Job Automation</span>
+      <span class="payg-tag">Browser Extension</span>
+      <span class="payg-tag">Pooled usage</span>
+    </div>
+
+    <div class="payg-input-wrap">
+      <div class="payg-symbol">$</div>
+      <input
+        class="payg-input"
+        id="payg-amount"
+        type="number"
+        min="550"
+        step="50"
+        placeholder="Enter amount"
+        oninput="updatePayg(this.value)"
+      >
+    </div>
+    <div class="payg-min" id="payg-note">Minimum $550 · Enter your amount above</div>
+
+    <a
+      href="#"
+      class="payg-btn"
+      id="payg-btn"
+      onclick="goPayg(event)"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="22" height="18" rx="2"/><path d="M1 9h22"/></svg>
+      Pay Now
+    </a>
+    <div class="payg-trust">🔒 Secured by Stripe · No auto renewal · One-time payment</div>
+  </div>
+  </div>
+
+
 
 <!-- FAQ -->
 
@@ -246,16 +327,16 @@
         <div class="faq-a">All plans are billed monthly. Cancel anytime — no long-term contracts, no hidden fees.</div>
       </div>
       <div class="faq-item reveal d1">
-        <div class="faq-q">Can I upgrade from Starter to Growth later?</div>
+        <div class="faq-q">Can I upgrade from Pro to Ultra later?</div>
         <div class="faq-a">Yes — you only pay the difference. Reach out to us and we'll handle the upgrade smoothly.</div>
       </div>
       <div class="faq-item reveal">
         <div class="faq-q">What is the Resume AI Maker Extension?</div>
-        <div class="faq-a">A browser extension (Growth &amp; Enterprise) that auto-fills job applications across platforms like LinkedIn, Naukri, and more using your AI-generated resume.</div>
+        <div class="faq-a">A browser extension (Pro &amp; Ultra) that auto-fills job applications across platforms like LinkedIn, Naukri, and more using your AI-generated resume.</div>
       </div>
       <div class="faq-item reveal d1">
         <div class="faq-q">Do you offer custom or team pricing?</div>
-        <div class="faq-a">Yes. For requirements beyond Agency plan, or for custom enterprise contracts, <a href="contact.html" style="color:var(--violet);font-weight:600;">get in touch</a> and we'll put together a tailored proposal.</div>
+        <div class="faq-a">Yes. For teams, agencies, or custom requirements, <a href="contact.html" style="color:var(--violet);font-weight:600;">get in touch</a> and we'll put together a tailored proposal.</div>
       </div>
     </div>
   </div>
@@ -344,5 +425,34 @@
 </footer>
 <div class="spectrum-line" style="position:static;"></div>
 <script src="shared.js"></script>
+<script>
+// ── PAY AS YOU GO ────────────────────────────────────────────────────
+const PAYG_BASE = 'https://buy.stripe.com/test_aFacN45dS9GrfW106E4wM07'; // Pay As You Go
+
+function updatePayg(val) {
+  const note = document.getElementById('payg-note');
+  const btn  = document.getElementById('payg-btn');
+  const amt  = parseFloat(val);
+  if (!val || amt < 550) {
+    note.textContent = 'Minimum $550 · Enter your amount above';
+    btn.textContent  = 'Pay Now';
+    return;
+  }
+  note.textContent = 'You will pay $' + amt.toFixed(2) + ' — no recurring charges';
+  btn.innerHTML    = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="22" height="18" rx="2"/><path d="M1 9h22"/></svg> Pay $' + amt.toFixed(2) + ' now';
+}
+
+function goPayg(e) {
+  e.preventDefault();
+  const amt = parseFloat(document.getElementById('payg-amount').value);
+  if (!amt || amt < 550) {
+    document.getElementById('payg-amount').focus();
+    document.getElementById('payg-note').textContent = '⚠ Minimum amount is $550';
+    document.getElementById('payg-note').style.color = '#D85A30';
+    return;
+  }
+  window.open(PAYG_BASE, '_blank');
+}
+</script>
 </body>
 </html>
