@@ -15,7 +15,7 @@
 <style>
 .pricing-grid{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(4,1fr);
   gap:1.5rem;
   margin-top:4rem;
   align-items:start;
@@ -89,52 +89,8 @@
 .faq-a{font-size:14px;color:var(--muted);line-height:1.65;}
 
 @media(max-width:860px){
-  .pricing-grid{grid-template-columns:1fr;max-width:480px;margin-left:auto;margin-right:auto;}
+  .pricing-grid{grid-template-columns:1fr;max-width:520px;margin-left:auto;margin-right:auto;}
   .faq-grid{grid-template-columns:1fr;}
-}
-
-/* ── STRIPE PAYMENT ─────────────────────────────────── */
-.stripe-btn{
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  margin-top:1.5rem;padding:15px 24px;border-radius:40px;
-  font-size:15px;font-weight:700;cursor:pointer;
-  border:none;text-decoration:none;
-  transition:all 0.2s;position:relative;overflow:hidden;
-}
-.stripe-btn-primary{
-  background:var(--violet);color:#fff;
-  box-shadow:0 4px 20px rgba(124,58,237,0.35);
-}
-.stripe-btn-primary:hover{background:#6D28D9;transform:translateY(-2px);box-shadow:0 8px 32px rgba(124,58,237,0.45);}
-.stripe-btn-outline{
-  background:transparent;color:var(--ink2);
-  border:2px solid var(--border2);
-}
-.stripe-btn-outline:hover{border-color:var(--violet);color:var(--violet);transform:translateY(-2px);}
-.stripe-trust{
-  display:flex;align-items:center;justify-content:center;gap:6px;
-  font-size:11px;color:var(--muted);margin-top:10px;
-  letter-spacing:0.02em;
-}
-.stripe-trust svg{opacity:0.5;}
-.plan-tax-note{
-  font-size:11px;color:var(--muted);
-  text-align:center;margin-top:4px;
-  letter-spacing:0.01em;
-}
-.plan-period-wrap{display:flex;flex-direction:column;align-items:flex-start;margin-bottom:1.75rem;}
-.stripe-section-trust{
-  display:flex;align-items:center;justify-content:center;gap:1.5rem;
-  flex-wrap:wrap;margin-top:2.5rem;padding:1.25rem;
-  border:1px solid var(--border);border-radius:16px;
-  background:var(--bg);
-}
-.stripe-section-trust span{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;}
-.secure-badge{
-  display:inline-flex;align-items:center;gap:5px;
-  font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
-  background:#E1F5EE;color:#0F6E56;
-  padding:3px 10px;border-radius:20px;margin-bottom:0.75rem;
 }
 </style>
 </head>
@@ -196,18 +152,8 @@
           <li>Full Time job type support</li>
           <li>Email support</li>
         </ul>
-              <!-- STRIPE NOTE -->
-      <div class="plan-tax-note">+ applicable taxes · cancel anytime</div>
-      <!-- STARTER STRIPE BUTTON -->
-      <a href="STRIPE_STARTER_LINK_HERE" target="_blank" rel="noopener" class="stripe-btn stripe-btn-outline" id="btn-starter">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="22" height="18" rx="2"/><path d="M1 9h22"/></svg>
-        Subscribe — $200/mo
-      </a>
-      <div class="stripe-trust">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        Secured by Stripe
+        <a href="contact.html" class="plan-cta plan-cta-outline">Get started &rarr;</a>
       </div>
-    </div>
 
       <!-- GROWTH -->
       <div class="plan plan-popular reveal">
@@ -226,18 +172,8 @@
           <li>Full Time &amp; Contract job types</li>
           <li>Priority email support</li>
         </ul>
-              <!-- STRIPE NOTE -->
-      <div class="plan-tax-note">+ applicable taxes · cancel anytime</div>
-      <!-- GROWTH STRIPE BUTTON -->
-      <a href="STRIPE_GROWTH_LINK_HERE" target="_blank" rel="noopener" class="stripe-btn stripe-btn-primary" id="btn-growth">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="22" height="18" rx="2"/><path d="M1 9h22"/></svg>
-        Subscribe — $350/mo
-      </a>
-      <div class="stripe-trust">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        Secured by Stripe
+        <a href="contact.html" class="plan-cta plan-cta-primary">Get started &rarr;</a>
       </div>
-    </div>
 
       <!-- ENTERPRISE -->
       <div class="plan reveal">
@@ -255,32 +191,44 @@
           <li class="feat-highlight">All Job Types — Full Time, Contract &amp; Part Time</li>
           <li>Dedicated support &amp; onboarding call</li>
         </ul>
-              <!-- STRIPE NOTE -->
-      <div class="plan-tax-note">+ applicable taxes · cancel anytime</div>
-      <!-- ENTERPRISE STRIPE BUTTON -->
-      <a href="STRIPE_ENTERPRISE_LINK_HERE" target="_blank" rel="noopener" class="stripe-btn stripe-btn-outline" id="btn-enterprise">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="22" height="18" rx="2"/><path d="M1 9h22"/></svg>
-        Subscribe — $500/mo
-      </a>
-      <div class="stripe-trust">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        Secured by Stripe
+        <a href="contact.html" class="plan-cta plan-cta-outline">Get started &rarr;</a>
       </div>
-    </div>
+
+
+
+      <!-- AGENCY $2000 -->
+      <div class="plan plan-agency reveal">
+        <div class="plan-bar" style="background:linear-gradient(90deg,#7C3AED,#0891B2);"></div>
+        <div class="plan-agency-badge">✦ Agency &amp; Teams</div>
+        <div class="plan-name">Agency</div>
+        <div class="plan-price"><span>$</span>2,000</div>
+        <div class="plan-period">month</div>
+        <p style="font-size:14px;line-height:1.6;margin-bottom:0.5rem;">For agencies, HR firms &amp; large teams who need full AI automation at scale with white-label options.</p>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li>Everything in Enterprise</li>
+          <li class="feat-highlight">Up to 5 team seats — all plans included per seat</li>
+          <li class="feat-highlight">White-label branding — your logo, your domain</li>
+          <li class="feat-highlight">API access — integrate PrismOps into your own platform</li>
+          <li class="feat-highlight">Bulk resume processing — hundreds of CVs at once</li>
+          <li class="feat-highlight">Custom AI training on your company data</li>
+          <li>Dedicated account manager</li>
+          <li>99.9% uptime SLA</li>
+          <li>Priority phone &amp; video support</li>
+          <li>Custom integrations &amp; onboarding</li>
+        </ul>
+        <div class="plan-tax-note">+ applicable taxes · cancel anytime</div>
+        <a href="contact.html" class="btn-agency" id="btn-agency">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="22" height="18" rx="2"/><path d="M1 9h22"/></svg>
+          Get Agency — $2,000/mo
+        </a>
+        <div class="stripe-trust" style="color:rgba(255,255,255,0.3);">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Secured by Stripe
+        </div>
+      </div>
 
     </div>
-  </div>
-
-    <!-- STRIPE TRUST SECTION -->
-    <div class="stripe-section-trust reveal">
-      <span>🔒 256-bit SSL encryption</span>
-      <span>💳 All major cards accepted</span>
-      <span>🔄 Cancel anytime — no lock-in</span>
-      <span>🧾 Auto tax calculation (Stripe Tax)</span>
-      <span>📧 Instant receipt by email</span>
-      <span>🌍 Charges in USD</span>
-    </div>
-
   </div>
 </section>
 
@@ -307,7 +255,7 @@
       </div>
       <div class="faq-item reveal d1">
         <div class="faq-q">Do you offer custom or team pricing?</div>
-        <div class="faq-a">Yes. For teams, agencies, or custom requirements, <a href="contact.html" style="color:var(--violet);font-weight:600;">get in touch</a> and we'll put together a tailored proposal.</div>
+        <div class="faq-a">Yes. For requirements beyond Agency plan, or for custom enterprise contracts, <a href="contact.html" style="color:var(--violet);font-weight:600;">get in touch</a> and we'll put together a tailored proposal.</div>
       </div>
     </div>
   </div>
