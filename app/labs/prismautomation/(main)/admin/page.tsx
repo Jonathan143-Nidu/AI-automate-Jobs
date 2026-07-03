@@ -2,19 +2,19 @@ import { auth } from "@/auth";
 import { adminService } from "@/lib/services/admin-service";
 import { ShieldCheck, UserCheck, ShieldAlert, Settings, LayoutDashboard, Database, ExternalLink } from "lucide-react";
 import Image from "next/image";
-import logo from "../../assets/innovcentric-logo-transparent.png";
+import logo from "../../../../assets/innovcentric-logo-transparent.png";
 import { AddUserForm } from "@/components/admin/AddUserForm";
 import { UserListTable } from "@/components/admin/UserListTable";
 
 import { SystemStats } from "@/components/admin/SystemStats";
 
-const SUPER_ADMIN = "hiring@innovcentric.com";
+const SUPER_ADMINS = ["admin@prismopss.com", "thotajonathan.249@gmail.com"];
 
 export default async function AdminPage() {
     const session = await auth();
 
-    // 1. Security Check: Only the Super Admin can see this page
-    if (session?.user?.email !== SUPER_ADMIN) {
+    // 1. Security Check: Only authorized Super Admins can see this page
+    if (!session?.user?.email || !SUPER_ADMINS.includes(session.user.email)) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC] p-6 font-sans">
                 <div className="max-w-md w-full bg-white rounded-[40px] shadow-2xl p-12 text-center space-y-6 border border-red-100/50 backdrop-blur-xl">
@@ -25,7 +25,7 @@ export default async function AdminPage() {
                         <h1 className="text-3xl font-black text-slate-900 tracking-tight">Access Restricted</h1>
                         <p className="text-slate-500 font-medium leading-relaxed">Only the Super Admin is authorized to access the core management dashboard.</p>
                     </div>
-                    <a href="/" className="inline-flex items-center gap-2 px-8 py-3.5 bg-slate-900 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 active:scale-95">
+                    <a href="/labs/prismautomation" className="inline-flex items-center gap-2 px-8 py-3.5 bg-slate-900 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 active:scale-95">
                         Return to Base
                     </a>
                 </div>

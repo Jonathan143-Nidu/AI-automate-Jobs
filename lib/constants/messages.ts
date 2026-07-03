@@ -40,14 +40,14 @@ export const SUCCESS_MESSAGES = {
 } as const;
 
 export const API_ROUTES = {
-    ANALYZE: '/api/analyze',
-    INTEGRATE: '/api/integrate',
-    EXTRACT_JD: '/api/extract-jd',
-    PARSE_RESUME: '/api/parse-resume',
-    GENERATE_COVER_LETTER: '/api/generate-cover-letter',
-    BENCH_CANDIDATES: '/api/bench/candidates',
-    BENCH_SYNC: '/api/bench/sync',
-    DRIVE_GENERATE_RESUME: '/api/drive/generate-resume'
+    ANALYZE: '/labs/prismautomation/api/analyze',
+    INTEGRATE: '/labs/prismautomation/api/integrate',
+    EXTRACT_JD: '/labs/prismautomation/api/extract-jd',
+    PARSE_RESUME: '/labs/prismautomation/api/parse-resume',
+    GENERATE_COVER_LETTER: '/labs/prismautomation/api/generate-cover-letter',
+    BENCH_CANDIDATES: '/labs/prismautomation/api/bench/candidates',
+    BENCH_SYNC: '/labs/prismautomation/api/bench/sync',
+    DRIVE_GENERATE_RESUME: '/labs/prismautomation/api/drive/generate-resume'
 } as const;
 
 export const FILE_LIMITS = {

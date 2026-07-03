@@ -42,7 +42,10 @@ export default function ResumeBuilder() {
     const fileOps = useFileOperations(state);
     const analysisLogic = useAnalysisLogic(state);
     const integrationLogic = useIntegrationLogic(state);
-    const { profile, getPrimaryResume, isLoaded: isProfileLoaded } = useProfile();
+    const { profile, getPrimaryResume, isLoaded: isProfileLoaded, error: profileError, refresh: refreshProfile } = useProfile();
+
+    // Compute once per render — used in effects below instead of calling getPrimaryResume() inside dep arrays
+    const primaryResume = getPrimaryResume();
 
     const { handleFileChange: handleFileUpload, loadStoredResume } = fileOps;
     const { extractJd: handleManualClean, startAnalysis, cancelAnalysis } = analysisLogic;
@@ -74,7 +77,7 @@ export default function ResumeBuilder() {
                 setJd(decodeURIComponent(extJd));
                 
                 // 2. Load the only available resume
-                const targetResume = getPrimaryResume();
+                const targetResume = primaryResume;
                 if (targetResume) {
                     await loadStoredResume(targetResume);
                 } else {
@@ -97,7 +100,7 @@ export default function ResumeBuilder() {
         // Also listen for hash changes while the app is already open
         window.addEventListener('hashchange', handleDeepLink);
         return () => window.removeEventListener('hashchange', handleDeepLink);
-    }, [isProfileLoaded, getPrimaryResume()?.data, setJd, loadStoredResume, startAnalysis, addLog]);
+    }, [isProfileLoaded, primaryResume?.data, setJd, loadStoredResume, startAnalysis, addLog]);
 
     // 4. Auto-load Primary Resume from Profile (Standard Entry)
     const lastLoadedResumeRef = React.useRef<string | null>(null);
@@ -112,7 +115,7 @@ export default function ResumeBuilder() {
 
     React.useEffect(() => {
         if (isProfileLoaded && step === 'input' && !window.location.hash.includes('ext_jd')) {
-            const primary = getPrimaryResume();
+            const primary = primaryResume;
             
             if (primary && primary.data !== lastLoadedResumeRef.current) {
                 lastLoadedResumeRef.current = primary.data;
@@ -128,7 +131,51 @@ export default function ResumeBuilder() {
                 addLog('No Resume', 'error');
             }
         }
-    }, [isProfileLoaded, getPrimaryResume()?.data, step, getPrimaryResume, loadStoredResume, resetSession, addLog]);
+    }, [isProfileLoaded, primaryResume?.data, step, primaryResume, loadStoredResume, resetSession, addLog]);
+
+    if (profileError?.type === 'permission') {
+        return (
+            <div className="flex flex-col items-center justify-center h-screen bg-slate-50 p-8 font-sans">
+                <div className="bg-white border border-red-200 rounded-2xl p-8 max-w-md shadow-xl text-center">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-100 text-red-600 mb-6">
+                        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Google Drive Permission Required</h3>
+                    <p className="text-gray-600 mb-6">{profileError.message}</p>
+                    <button
+                        onClick={() => signOut({ callbackUrl: '/labs/prismautomation/login?signout=1' })}
+                        className="w-full bg-red-600 text-white font-semibold px-6 py-3 rounded-xl hover:bg-red-700 transition shadow-md hover:shadow-lg cursor-pointer"
+                    >
+                        Sign Out & Re-authenticate
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    if (profileError?.type === 'unknown') {
+        return (
+            <div className="flex flex-col items-center justify-center h-screen bg-slate-50 p-8 font-sans">
+                <div className="bg-white border border-yellow-200 rounded-2xl p-8 max-w-md shadow-xl text-center">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-yellow-100 text-yellow-600 mb-6">
+                        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Error Loading Profile</h3>
+                    <p className="text-gray-600 mb-6">{profileError.message}</p>
+                    <button
+                        onClick={() => window.location.reload()}
+                        className="w-full bg-yellow-600 text-white font-semibold px-6 py-3 rounded-xl hover:bg-yellow-700 transition shadow-md hover:shadow-lg cursor-pointer"
+                    >
+                        Try Again
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col h-screen bg-slate-50 overflow-hidden font-sans text-gray-900">
@@ -244,6 +291,11 @@ export default function ResumeBuilder() {
                 <UserProfileModal
                     isOpen={isProfileOpen}
                     onClose={() => setIsProfileOpen(false)}
+                    onSave={() => {
+                        // Force the resume-load guard to reset so the new resume is detected
+                        lastLoadedResumeRef.current = null;
+                        refreshProfile();
+                    }}
                 />
             </div>
 

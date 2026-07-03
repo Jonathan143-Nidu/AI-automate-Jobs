@@ -38,7 +38,7 @@ export const InputSection: React.FC<InputSectionProps> = ({
         <>
             <div className="flex gap-2 mb-2">
                 <Link
-                    href="/history"
+                    href="/labs/prismautomation/history"
                     className="flex-1 flex items-center justify-center gap-2 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-indigo-600 px-3 py-2 rounded-lg text-xs font-semibold transition-all shadow-sm group"
                     title="View History"
                 >

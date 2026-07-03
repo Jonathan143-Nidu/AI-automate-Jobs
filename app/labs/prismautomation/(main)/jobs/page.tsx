@@ -466,7 +466,7 @@ export default function JobsPage() {
 
   // Fetch filters on mount
   useEffect(() => {
-    fetch('/api/user/filters')
+    fetch('/labs/prismautomation/api/user/filters')
       .then(res => res.json())
       .then(data => {
         setUserFilters(data);
@@ -564,7 +564,7 @@ export default function JobsPage() {
         employment_types: dEt, workplace_types: dWp, employer_types: dEmpt,
         easy_apply: dEasy, willing_to_sponsor: dSponsor
       };
-      const res = await fetch('/api/jobs/dice', { 
+      const res = await fetch('/labs/prismautomation/api/jobs/dice', { 
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' }, 
         body: JSON.stringify(body) 
@@ -594,7 +594,7 @@ export default function JobsPage() {
     const lastJobId = (isLoadMore && lJobs.length > 0) ? lJobs[lJobs.length - 1].id : null;
 
     try {
-      const res = await fetch('/api/jobs/linkedin', {
+      const res = await fetch('/labs/prismautomation/api/jobs/linkedin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -636,11 +636,11 @@ export default function JobsPage() {
     // 3. We haven't auto-loaded yet
     // 4. There is a role to search for
     if (isProfileLoaded && isFiltersLoaded && !hasAutoLoaded.current) {
-      console.log('[Jobs Auto-Load] Checking state:', { role: profile.role, isProfileLoaded, isFiltersLoaded });
+      console.log('[Jobs Auto-Load] Checking state:', { role: profile?.role, isProfileLoaded, isFiltersLoaded });
       
-      if (profile.role) {
+      if (profile?.role) {
         hasAutoLoaded.current = true;
-        const initialRole = profile.role;
+        const initialRole = profile?.role;
       
       // Pre-fill keywords for all providers
       setLKw(initialRole);
@@ -656,7 +656,7 @@ export default function JobsPage() {
         setLLoading(true);
         setLError(null);
         try {
-          const res = await fetch('/api/jobs/linkedin', {
+          const res = await fetch('/labs/prismautomation/api/jobs/linkedin', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
@@ -682,7 +682,7 @@ export default function JobsPage() {
       triggerInitialSearch();
       }
     }
-  }, [isProfileLoaded, isFiltersLoaded, profile.role, lLoc, lDays, lJobType]);
+  }, [isProfileLoaded, isFiltersLoaded, profile?.role, lLoc, lDays, lJobType]);
 
   const searchDice = useCallback(async (page = 1) => {
     if (!diceKw.trim()) return;
@@ -692,7 +692,7 @@ export default function JobsPage() {
       if (diceLoc) body.location = diceLoc;
       if (diceWp)  body.workplace_types  = [diceWp];
       if (diceEt)  body.employment_types = [diceEt];
-      const res  = await fetch('/api/jobs/search', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      const res  = await fetch('/labs/prismautomation/api/jobs/search', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Search failed');
       setDiceJobs(data.data || []); setDiceMeta(data.meta || null); setDiceSearched(true);
@@ -703,7 +703,7 @@ export default function JobsPage() {
   const searchAdzuna = useCallback(async (page = 1) => {
     setALoading(true); setAError(null); setAPage(page);
     try {
-      const res  = await fetch('/api/jobs/adzuna', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ keyword: aKw, sector: aSector, location: aLoc, employment_type: aEt, page, results_per_page: 10, posted_days: aDays }) });
+      const res  = await fetch('/labs/prismautomation/api/jobs/adzuna', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ keyword: aKw, sector: aSector, location: aLoc, employment_type: aEt, page, results_per_page: 10, posted_days: aDays }) });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Search failed');
       setAJobs(data.jobs || []); setATotal(data.total || 0); setASearched(true);
@@ -714,7 +714,7 @@ export default function JobsPage() {
   const searchJSearch = useCallback(async (page = 1) => {
     setJLoading(true); setJError(null); setJPage(page);
     try {
-      const res  = await fetch('/api/jobs/jsearch', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ keyword: jKw, sector: jSector, location: jLoc, employment_type: jEt, page, posted_days: jDays }) });
+      const res  = await fetch('/labs/prismautomation/api/jobs/jsearch', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ keyword: jKw, sector: jSector, location: jLoc, employment_type: jEt, page, posted_days: jDays }) });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Search failed');
       setJJobs(data.jobs || []); setJSearched(true);
@@ -726,7 +726,7 @@ export default function JobsPage() {
     if (!sKw.trim()) return;
     setSLoading(true); setSError(null); setSPage(page);
     try {
-      const res  = await fetch('/api/jobs/serper', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ keyword: sKw, location: sLoc, employment_type: sEt, posted_days: sDays, page }) });
+      const res  = await fetch('/labs/prismautomation/api/jobs/serper', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ keyword: sKw, location: sLoc, employment_type: sEt, posted_days: sDays, page }) });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Search failed');
       setSJobs(data.jobs || []); setSSearched(true);
@@ -779,7 +779,7 @@ export default function JobsPage() {
           </div>
           
           <a
-            href="/"
+            href="/labs/prismautomation"
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 transition-all border border-gray-100 hover:border-indigo-100 shadow-sm"
           >
             <ChevronLeft className="w-3.5 h-3.5" />
@@ -1125,7 +1125,7 @@ export default function JobsPage() {
             {!dLoading && dJobs.length > 0 && (
               <>
                 <div className="flex flex-col gap-2.5">
-                  {dJobs.map(j => <DiceCard key={j.id} job={j} />)}
+                  {dJobs.map(j => <DiceCard key={j.guid} job={j} />)}
                 </div>
                 <Pagination 
                   page={dPage} 

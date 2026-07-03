@@ -207,7 +207,7 @@ export default function DiceJobSearch() {
         if (filters.easyApply) body.easy_apply = true;
         if (filters.sponsorship) body.willing_to_sponsor = true;
 
-        const res = await fetch("/api/jobs/search", {
+        const res = await fetch("/labs/prismautomation/api/jobs/search", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),

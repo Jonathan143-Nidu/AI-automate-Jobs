@@ -32,7 +32,7 @@ export default function BatchAnalysisTerminal({ candidate, jd }: Props) {
 
     const runAnalysis = useCallback(async (resumeText: string) => {
         try {
-            const response = await fetch('/api/analyze', {
+            const response = await fetch('/labs/prismautomation/api/analyze', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ jd, resumeText }),
@@ -84,7 +84,7 @@ export default function BatchAnalysisTerminal({ candidate, jd }: Props) {
         try {
             // 1. Fetch Resume
             addLog(`Connecting to Drive...`); // Clean log
-            const res = await fetch('/api/drive/generate-resume', {
+            const res = await fetch('/labs/prismautomation/api/drive/generate-resume', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ folderUrl: candidate.link, consultantName: candidate.name })

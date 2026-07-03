@@ -22,15 +22,18 @@ export const AnalysisPanel: React.FC<AnalysisPanelProps> = ({
     const prevIsAnalyzing = useRef(isAnalyzing);
 
     useEffect(() => {
-        // Trigger the transition when analysis successfully finishes
-        if (prevIsAnalyzing.current === true && isAnalyzing === false && analysisResult) {
-            setShowTransition(true);
-            const timer = setTimeout(() => {
-                setShowTransition(false);
-            }, 3000);
-            return () => clearTimeout(timer);
-        }
+        const wasAnalyzing = prevIsAnalyzing.current;
         prevIsAnalyzing.current = isAnalyzing;
+
+        // Trigger the transition when analysis successfully finishes
+        if (wasAnalyzing === true && isAnalyzing === false && analysisResult) {
+            const showTimer = setTimeout(() => setShowTransition(true), 0);
+            const hideTimer = setTimeout(() => setShowTransition(false), 3000);
+            return () => {
+                clearTimeout(showTimer);
+                clearTimeout(hideTimer);
+            };
+        }
     }, [isAnalyzing, analysisResult]);
 
     useEffect(() => {

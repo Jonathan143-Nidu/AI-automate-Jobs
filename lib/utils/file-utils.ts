@@ -41,7 +41,7 @@ export const parseFileViaAPI = async (
     const formData = new FormData();
     formData.append('file', file);
 
-    const res = await fetch('/api/parse-resume', {
+    const res = await fetch('/labs/prismautomation/api/parse-resume', {
         method: 'POST',
         body: formData
     });

@@ -8,12 +8,24 @@
   --font-mono: var(--font-geist-mono);
 
   /* Extend the theme with custom colors matching the source design */
-  --color-primary: hsl(20 90% 48%);
-  --color-primary-foreground: hsl(33 100% 96%);
+  --color-primary: #7C3AED;
+  --color-primary-foreground: #ffffff;
 
-  --color-chart-1: hsl(27 95% 60%);
-  --color-chart-2: hsl(43 96% 56%);
-  --color-accent: hsl(47 100% 96%);
+  --color-chart-1: #2563EB;
+  --color-chart-2: #0891B2;
+  --color-accent: #059669;
+
+  --color-indigo-50: #EDE9FE;
+  --color-indigo-100: #DDD6FE;
+  --color-indigo-200: #C7D2FE;
+  --color-indigo-300: #A78BFA;
+  --color-indigo-400: #818CF8;
+  --color-indigo-500: #6366F1;
+  --color-indigo-600: #7C3AED;
+  --color-indigo-700: #6D28D9;
+  --color-indigo-800: #5B21B6;
+  --color-indigo-900: #4C1D95;
+  --color-indigo-950: #2E1065;
 
   --animate-float: float 6s ease-in-out infinite;
   --animate-pulse-glow: pulse-glow 3s ease-in-out infinite;
@@ -26,14 +38,14 @@
 :root {
   /* Light Mode Variables matching source design (Standard White Theme) */
   --background: #ffffff;
-  --foreground: #0a0a0a;
+  --foreground: #0d0d1a;
 
-  --primary: 20 90% 48%;
-  --chart-1: 27 95% 60%;
-  --chart-2: 43 96% 56%;
-  --muted: 0 0% 96%;
-  --muted-foreground: 0 0% 45%;
-  --border: 0 0% 90%;
+  --primary: 262 83% 58%;
+  --chart-1: 221 83% 53%;
+  --chart-2: 191 91% 37%;
+  --muted: 240 10% 96%;
+  --muted-foreground: 240 5% 45%;
+  --border: 240 10% 90%;
   --card: 0 0% 100%;
 }
 

@@ -10,6 +10,7 @@ import { parseDocxFile, parseFileViaAPI } from '../../lib/utils/file-utils';
 interface UserProfileModalProps {
     isOpen: boolean;
     onClose: () => void;
+    onSave?: () => void;
 }
 
 /**
@@ -32,10 +33,10 @@ const CompactField: React.FC<{
     </div>
 );
 
-export const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) => {
+export const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose, onSave }) => {
     const { data: session } = useSession();
     const { profile, updateProfile, addResume, deleteResume } = useProfile();
-    const [formData, setFormData] = useState<UserProfile>(profile);
+    const [formData, setFormData] = useState<UserProfile>(profile || {} as UserProfile);
     const [saved, setSaved] = useState(false);
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [isInsightsExpanded, setIsInsightsExpanded] = useState(false);
@@ -43,9 +44,10 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onCl
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     React.useEffect(() => {
+        if (!profile) return;
         setFormData({
             ...profile,
-            email: session?.user?.email || profile.email
+            email: session?.user?.email || profile.email || ""
         });
     }, [profile, isOpen, session]);
 
@@ -58,6 +60,8 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onCl
         setIsInsightsExpanded(false);
         setSaved(true);
         setTimeout(() => setSaved(false), 2000);
+        // Notify parent to re-fetch profile so resume appears immediately
+        onSave?.();
     };
 
     const performAnalysis = async (text: string) => {
@@ -65,7 +69,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onCl
         setIsAnalyzing(true);
         setIsInsightsExpanded(true);
         try {
-            const aiRes = await fetch('/api/analyze-profile', {
+            const aiRes = await fetch('/labs/prismautomation/api/analyze-profile', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ resumeText: text })
@@ -105,7 +109,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onCl
     };
 
     const analyzeExistingResume = async () => {
-        const resume = profile.resumes[0];
+        const resume = (profile as any)?.resumes?.[0];
         if (!resume) return;
 
         setIsAnalyzing(true);
@@ -143,6 +147,8 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onCl
             const extension = file.name.split('.').pop()?.toLowerCase() as any;
             const type = (['docx', 'pdf', 'txt'].includes(extension) ? extension : 'docx') as 'docx' | 'pdf' | 'txt';
             addResume(file.name, data, type);
+            // Notify parent immediately so resume name appears in main UI
+            onSave?.();
             
             // Trigger AI Profile Generation
             try {
@@ -164,9 +170,9 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onCl
         reader.readAsDataURL(file);
     };
 
-    if (!isOpen) return null;
+    if (!isOpen || !profile) return null;
 
-    const resume = profile.resumes[0];
+    const resume = (profile as any)?.resumes?.[0];
 
     return (
         <AnimatePresence>
@@ -310,14 +316,14 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onCl
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6">
                                         <CompactField label="First Name" icon={User}>
                                             <input 
-                                                value={formData.firstName}
+                                                value={formData.firstName || ""}
                                                 onChange={(e) => handleInputChange('firstName', e.target.value)}
                                                 className="w-full py-1 text-sm font-bold text-slate-900 bg-transparent border-0 border-b border-slate-200 focus:border-indigo-500 focus:ring-0 transition-all outline-none" 
                                             />
                                         </CompactField>
                                         <CompactField label="Last Name" icon={User}>
                                             <input 
-                                                value={formData.lastName}
+                                                value={formData.lastName || ""}
                                                 onChange={(e) => handleInputChange('lastName', e.target.value)}
                                                 className="w-full py-1 text-sm font-bold text-slate-900 bg-transparent border-0 border-b border-slate-200 focus:border-indigo-500 focus:ring-0 transition-all outline-none" 
                                             />
@@ -326,14 +332,14 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onCl
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6">
                                         <CompactField label="Role Title" icon={Briefcase}>
                                             <input 
-                                                value={formData.role}
+                                                value={formData.role || ""}
                                                 onChange={(e) => handleInputChange('role', e.target.value)}
                                                 className="w-full py-1 text-sm font-bold text-slate-900 bg-transparent border-0 border-b border-slate-200 focus:border-indigo-500 focus:ring-0 transition-all outline-none" 
                                             />
                                         </CompactField>
                                         <CompactField label="Location" icon={MapPin}>
                                             <input 
-                                                value={formData.location}
+                                                value={formData.location || ""}
                                                 onChange={(e) => handleInputChange('location', e.target.value)}
                                                 className="w-full py-1 text-sm font-bold text-slate-900 bg-transparent border-0 border-b border-slate-200 focus:border-indigo-500 focus:ring-0 transition-all outline-none" 
                                             />
@@ -360,14 +366,14 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onCl
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6">
                                         <CompactField label="Mobile" icon={Phone}>
                                             <input 
-                                                value={formData.phone}
+                                                value={formData.phone || ""}
                                                 onChange={(e) => handleInputChange('phone', e.target.value)}
                                                 className="w-full py-1 text-sm font-bold text-slate-900 bg-transparent border-0 border-b border-slate-200 focus:border-indigo-500 focus:ring-0 transition-all outline-none" 
                                             />
                                         </CompactField>
                                         <CompactField label="LinkedIn" icon={Linkedin}>
                                             <input 
-                                                value={formData.linkedinURL}
+                                                value={formData.linkedinURL || ""}
                                                 onChange={(e) => handleInputChange('linkedinURL', e.target.value)}
                                                 className="w-full py-1 text-sm font-bold text-slate-900 bg-transparent border-0 border-b border-slate-200 focus:border-indigo-500 focus:ring-0 transition-all outline-none" 
                                             />
@@ -387,14 +393,14 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onCl
                                     <div className="space-y-0.5">
                                         <CompactField label="Bachelor" icon={GraduationCap}>
                                             <input 
-                                                value={formData.bachelorDegree}
+                                                value={formData.bachelorDegree || ""}
                                                 onChange={(e) => handleInputChange('bachelorDegree', e.target.value)}
                                                 className="w-full py-1 text-sm font-bold text-slate-900 bg-transparent border-0 border-b border-slate-200 focus:border-indigo-500 focus:ring-0 transition-all outline-none" 
                                             />
                                         </CompactField>
                                         <CompactField label="Master" icon={GraduationCap}>
                                             <input 
-                                                value={formData.masterDegree}
+                                                value={formData.masterDegree || ""}
                                                 onChange={(e) => handleInputChange('masterDegree', e.target.value)}
                                                 className="w-full py-1 text-sm font-bold text-slate-900 bg-transparent border-0 border-b border-slate-200 focus:border-indigo-500 focus:ring-0 transition-all outline-none" 
                                             />
@@ -410,7 +416,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onCl
                                     <div className="space-y-0.5">
                                         <CompactField label="Visa Type" icon={ShieldCheck}>
                                             <input 
-                                                value={formData.visaType}
+                                                value={formData.visaType || ""}
                                                 onChange={(e) => handleInputChange('visaType', e.target.value)}
                                                 className="w-full py-1 text-sm font-bold text-slate-900 bg-transparent border-0 border-b border-slate-200 focus:border-indigo-500 focus:ring-0 transition-all outline-none" 
                                             />
@@ -418,7 +424,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onCl
                                         <CompactField label="Visa Exp" icon={CalendarClock}>
                                             <input 
                                                 type="date"
-                                                value={formData.visaExpiry}
+                                                value={formData.visaExpiry || ""}
                                                 onChange={(e) => handleInputChange('visaExpiry', e.target.value)}
                                                 className="w-full py-0.5 text-sm font-bold text-slate-900 bg-transparent border-0 outline-none" 
                                             />
@@ -436,14 +442,14 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onCl
                                 <div className="space-y-0.5">
                                     <CompactField label="Availability" icon={CalendarClock}>
                                         <input 
-                                            value={formData.interviewSlots}
+                                            value={formData.interviewSlots || ""}
                                             onChange={(e) => handleInputChange('interviewSlots', e.target.value)}
                                             className="w-full py-1 text-sm font-bold text-slate-900 bg-transparent border-0 border-b border-slate-200 focus:border-indigo-500 focus:ring-0 transition-all outline-none" 
                                         />
                                     </CompactField>
                                     <CompactField label="Preferred Mode" icon={Video}>
                                         <select 
-                                            value={formData.interviewMode}
+                                            value={formData.interviewMode || ""}
                                             onChange={(e) => handleInputChange('interviewMode', e.target.value)}
                                             className="w-full py-1 text-sm font-semibold text-gray-800 bg-transparent border-0 outline-none appearance-none cursor-pointer" 
                                         >

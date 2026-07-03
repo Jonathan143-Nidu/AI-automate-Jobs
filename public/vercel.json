@@ -1,0 +1,23 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "index, follow" }
+      ]
+    }
+  ],
+  "routes": [
+    { "src": "/sitemap.xml", "dest": "/sitemap.xml" },
+    { "src": "/robots.txt", "dest": "/robots.txt" },
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/services", "dest": "/services.html" },
+    { "src": "/projects", "dest": "/projects.html" },
+    { "src": "/about", "dest": "/about.html" },
+    { "src": "/pricing", "dest": "/pricing.html" },
+    { "src": "/contact", "dest": "/contact.html" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
+}

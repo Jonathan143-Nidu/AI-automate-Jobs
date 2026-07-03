@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FileText, LogOut, Settings, User, Mail, ChevronDown, Briefcase } from 'lucide-react';
+import { FileText, LogOut, Settings, User, Mail, ChevronDown, Briefcase, CalendarClock, ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSession } from 'next-auth/react';
 import { useProfile } from '../../hooks/useProfile';
@@ -12,11 +12,36 @@ interface BuilderHeaderProps {
     openProfile?: () => void;
 }
 
+interface Subscription {
+    status: 'active' | 'inactive';
+    accessStart: string | null;
+    accessEnd: string | null;
+    role: string;
+}
+
+function formatDate(dateStr: string | null): string {
+    if (!dateStr) return '—';
+    try {
+        return new Date(dateStr).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    } catch {
+        return dateStr;
+    }
+}
+
+function getDaysRemaining(accessEnd: string | null): number | null {
+    if (!accessEnd) return null;
+    const end = new Date(accessEnd);
+    end.setHours(23, 59, 59, 999);
+    const diff = end.getTime() - Date.now();
+    return Math.ceil(diff / (1000 * 60 * 60 * 24));
+}
+
 export const BuilderHeader: React.FC<BuilderHeaderProps> = ({ signOut, openSettings, resetSession, openProfile }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { data: session } = useSession();
-    const { initials, profile } = useProfile();
+    const { profile } = useProfile();
     const menuRef = useRef<HTMLDivElement>(null);
+    const [subscription, setSubscription] = useState<Subscription | null>(null);
 
     // Close menu when clicking outside
     useEffect(() => {
@@ -29,32 +54,63 @@ export const BuilderHeader: React.FC<BuilderHeaderProps> = ({ signOut, openSetti
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
+    // Fetch subscription info
+    useEffect(() => {
+        fetch('/labs/prismautomation/api/user/subscription')
+            .then(r => r.ok ? r.json() : null)
+            .then(data => {
+                if (data?.subscription) setSubscription(data.subscription);
+            })
+            .catch(() => {});
+    }, []);
+
     // Identity Priority: Local Profile -> Google Session -> Default
-    const userDisplayName = (profile.firstName && profile.lastName) 
-        ? `${profile.firstName} ${profile.lastName}`
+    const userDisplayName = (profile?.firstName && profile?.lastName) 
+        ? `${profile?.firstName} ${profile?.lastName}`
         : (session?.user?.name || 'Candidate');
 
     const userEmail = session?.user?.email || '';
     
     // Use Google image if available, otherwise use initials
     const userImage = session?.user?.image;
-    const displayInitials = (profile.firstName && profile.lastName)
-        ? `${profile.firstName[0]}${profile.lastName[0]}`
+    const displayInitials = (profile?.firstName && profile?.lastName)
+        ? `${profile?.firstName[0]}${profile?.lastName[0]}`
         : (session?.user?.name ? session.user.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() : 'U');
+
+    const daysRemaining = subscription ? getDaysRemaining(subscription.accessEnd) : null;
+    const isUnlimited = subscription && !subscription.accessEnd;
+    const isExpiringSoon = daysRemaining !== null && daysRemaining <= 7 && daysRemaining > 0;
+    const isExpired = daysRemaining !== null && daysRemaining <= 0;
 
     return (
         <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-3 md:px-6 shrink-0 z-50 shadow-sm relative">
-            <div className="flex items-center gap-1 md:gap-2">
-                <FileText className="w-5 h-5 md:w-6 md:h-6 text-indigo-600" />
-                <span className="text-lg md:text-xl font-bold tracking-tight text-gray-900 leading-none">
-                    <span className="hidden sm:inline">Innov</span><span className="text-indigo-600 sm:inline">-AI</span>
+            <div className="flex items-center gap-2">
+                <svg width="28" height="28" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="nlg" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#A78BFA" />
+                            <stop offset="100%" stopColor="#38BDF8" />
+                        </linearGradient>
+                    </defs>
+                    <line x1="2" y1="18" x2="10" y2="18" stroke="#CBD5E1" strokeWidth="1.5" strokeLinecap="round" />
+                    <polygon points="10,4 10,32 22,18" fill="url(#nlg)" opacity="0.85" />
+                    <polygon points="10,4 22,18 16,4" fill="#EDE9FE" opacity="0.6" />
+                    <polygon points="10,4 10,32 22,18" fill="none" stroke="#A78BFA" strokeWidth="0.8" />
+                    <line x1="22" y1="18" x2="34" y2="8" stroke="#7C3AED" strokeWidth="1.8" strokeLinecap="round" />
+                    <line x1="22" y1="18" x2="34" y2="13" stroke="#2563EB" strokeWidth="1.8" strokeLinecap="round" />
+                    <line x1="22" y1="18" x2="34" y2="18" stroke="#0891B2" strokeWidth="1.8" strokeLinecap="round" />
+                    <line x1="22" y1="18" x2="34" y2="23" stroke="#059669" strokeWidth="1.8" strokeLinecap="round" />
+                    <line x1="22" y1="18" x2="34" y2="28" stroke="#10B981" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+                <span className="text-lg md:text-xl font-black tracking-tight leading-none bg-gradient-to-r from-[#7C3AED] via-[#2563EB] via-[#0891B2] to-[#059669] bg-clip-text text-transparent">
+                    Prism Automation
                 </span>
             </div>
 
             {/* CENTER NAVIGATION */}
             <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-2">
                 <Link
-                    href="/jobs"
+                    href="/labs/prismautomation/jobs"
                     className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-xl text-[11px] font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-lg shadow-slate-200 group"
                 >
                     <Briefcase className="w-3.5 h-3.5 text-slate-400 group-hover:text-indigo-400 transition-colors" />
@@ -86,13 +142,72 @@ export const BuilderHeader: React.FC<BuilderHeaderProps> = ({ signOut, openSetti
                                 initial={{ opacity: 0, y: 10, scale: 0.95 }}
                                 animate={{ opacity: 1, y: 5, scale: 1 }}
                                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                className="absolute right-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-gray-100 py-2 z-50 overflow-hidden"
+                                className="absolute right-0 top-full mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-gray-100 py-2 z-50 overflow-hidden"
                             >
+                                {/* User Identity */}
                                 <div className="px-4 py-3 border-b border-gray-50 mb-1">
                                     <p className="text-xs font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Signed in as</p>
                                     <p className="text-sm font-bold text-gray-900 truncate">{userDisplayName}</p>
                                     {userEmail && <p className="text-[10px] text-gray-500 truncate mt-0.5">{userEmail}</p>}
                                 </div>
+
+                                {/* Subscription Badge */}
+                                {subscription && (
+                                    <div className={`mx-3 mb-2 px-3 py-2.5 rounded-xl border ${
+                                        isExpired
+                                            ? 'bg-red-50 border-red-200'
+                                            : isExpiringSoon
+                                            ? 'bg-amber-50 border-amber-200'
+                                            : 'bg-indigo-50 border-indigo-100'
+                                    }`}>
+                                        <div className="flex items-center justify-between mb-1.5">
+                                            <div className="flex items-center gap-1.5">
+                                                <ShieldCheck className={`w-3.5 h-3.5 ${isExpired ? 'text-red-500' : isExpiringSoon ? 'text-amber-500' : 'text-indigo-600'}`} />
+                                                <span className={`text-[10px] font-black uppercase tracking-widest ${isExpired ? 'text-red-600' : isExpiringSoon ? 'text-amber-600' : 'text-indigo-700'}`}>
+                                                    Subscription
+                                                </span>
+                                            </div>
+                                            <span className={`text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                                                isExpired
+                                                    ? 'bg-red-100 text-red-700'
+                                                    : subscription.status === 'active'
+                                                    ? 'bg-emerald-100 text-emerald-700'
+                                                    : 'bg-gray-100 text-gray-600'
+                                            }`}>
+                                                {isExpired ? 'Expired' : subscription.status === 'active' ? '● Active' : '● Inactive'}
+                                            </span>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-1.5">
+                                            <div>
+                                                <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Start</p>
+                                                <p className="text-[11px] font-bold text-gray-700">{formatDate(subscription.accessStart)}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest">End</p>
+                                                <p className={`text-[11px] font-bold ${isExpired ? 'text-red-600' : isExpiringSoon ? 'text-amber-600' : 'text-gray-700'}`}>
+                                                    {isUnlimited ? '∞ Unlimited' : formatDate(subscription.accessEnd)}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        {/* Days remaining pill */}
+                                        {!isUnlimited && daysRemaining !== null && (
+                                            <div className={`mt-1.5 text-center text-[9px] font-black uppercase tracking-wider py-0.5 rounded-lg ${
+                                                isExpired
+                                                    ? 'bg-red-100 text-red-700'
+                                                    : isExpiringSoon
+                                                    ? 'bg-amber-100 text-amber-700'
+                                                    : 'bg-indigo-100 text-indigo-700'
+                                            }`}>
+                                                {isExpired ? 'Access expired' : `${daysRemaining} day${daysRemaining !== 1 ? 's' : ''} remaining`}
+                                            </div>
+                                        )}
+                                        {isUnlimited && (
+                                            <div className="mt-1.5 text-center text-[9px] font-black uppercase tracking-wider py-0.5 rounded-lg bg-indigo-100 text-indigo-700">
+                                                No expiry date
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
 
                                 <button
                                     onClick={() => { openProfile?.(); setIsMenuOpen(false); }}
@@ -123,7 +238,7 @@ export const BuilderHeader: React.FC<BuilderHeaderProps> = ({ signOut, openSetti
                                 <button
                                     onClick={() => {
                                         if (resetSession) resetSession();
-                                        signOut({ callbackUrl: '/login' });
+                                        signOut({ callbackUrl: '/labs/prismautomation/login?signout=1' });
                                     }}
                                     className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
                                 >

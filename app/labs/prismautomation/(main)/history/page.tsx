@@ -21,7 +21,7 @@ export default async function HistoryPage() {
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2 border-b border-slate-200/60">
                     <div className="flex items-center gap-5">
-                        <Link href="/" className="group p-2.5 rounded-2xl bg-white shadow-sm border border-slate-200 hover:border-indigo-300 hover:shadow-md transition-all active:scale-95">
+                        <Link href="/labs/prismautomation" className="group p-2.5 rounded-2xl bg-white shadow-sm border border-slate-200 hover:border-indigo-300 hover:shadow-md transition-all active:scale-95">
                             <ArrowLeft className="w-5 h-5 text-slate-500 group-hover:text-indigo-600 transition-colors" />
                         </Link>
                         <div>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Labs | PrismOps — Experimental AI Products</title>
+<meta name="description" content="Explore experimental AI applications and next-generation workflow automation tools built by PrismOps.">
+<meta property="og:title" content="AI Labs | PrismOps — Experimental AI Products">
+<meta property="og:description" content="Explore experimental AI applications and next-generation workflow automation tools built by PrismOps.">
+<meta property="og:url" content="https://www.prismopss.com/labs">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg width='36' height='36' viewBox='0 0 36 36' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='nlg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23A78BFA'/%3E%3Cstop offset='100%25' stop-color='%2338BDF8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='36' height='36' rx='8' fill='%23FFFFFF'/%3E%3Cline x1='2' y1='18' x2='10' y2='18' stroke='%23CBD5E1' stroke-width='1.5' stroke-linecap='round'/%3E%3Cpolygon points='10,4 10,32 22,18' fill='url(%23nlg)' opacity='0.85'/%3E%3Cpolygon points='10,4 22,18 16,4' fill='%23EDE9FE' opacity='0.6'/%3E%3Cpolygon points='10,4 10,32 22,18' fill='none' stroke='%23A78BFA' stroke-width='0.8'/%3E%3Cline x1='22' y1='18' x2='34' y2='8' stroke='%237C3AED' stroke-width='1.8' stroke-linecap='round'/%3E%3Cline x1='22' y1='18' x2='34' y2='13' stroke='%232563EB' stroke-width='1.8' stroke-linecap='round'/%3E%3Cline x1='22' y1='18' x2='34' y2='18' stroke='%230891B2' stroke-width='1.8' stroke-linecap='round'/%3E%3Cline x1='22' y1='18' x2='34' y2='23' stroke='%23059669' stroke-width='1.8' stroke-linecap='round'/%3E%3Cline x1='22' y1='18' x2='34' y2='28' stroke='%2310B981' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="canonical" href="https://www.prismopss.com/labs">
+<link rel="stylesheet" href="shared.css">
+<style>
+.labs-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  margin-top: 3rem;
+}
+.lab-featured-card {
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 24px;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.3s, transform 0.2s, border-color 0.3s;
+}
+@media (min-width: 768px) {
+  .lab-featured-card {
+    flex-direction: row;
+    align-items: center;
+  }
+  .lab-card-content {
+    flex: 1.2;
+  }
+  .lab-card-preview {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+}
+.lab-featured-card:hover {
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(124, 58, 237, 0.25);
+}
+.lab-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--violet);
+  background: var(--violet-soft);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-weight: 700;
+  width: fit-content;
+  margin-bottom: 1rem;
+}
+.lab-title {
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+.lab-title .grad-text {
+  background: var(--grd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.lab-desc {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.75;
+  margin-bottom: 1.5rem;
+}
+.lab-specs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+  padding-top: 1.5rem;
+  border-t: 1px solid var(--border);
+}
+.spec-item {
+  display: flex;
+  flex-direction: column;
+}
+.spec-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--muted2);
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+.spec-val {
+  font-size: 14px;
+  color: var(--ink2);
+  font-weight: 600;
+}
+.launch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--violet);
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 40px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.25);
+  cursor: pointer;
+  border: none;
+}
+.launch-btn:hover {
+  background: #6D28D9;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.35);
+}
+.prism-svg-box {
+  background: var(--bg2);
+  border: 1px dashed var(--border2);
+  border-radius: 20px;
+  width: 100%;
+  aspect-ratio: 16/10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+</style>
+</head>
+<body>
+<div class="spectrum-line"></div>
+<nav id="nav">
+  <div class="nav-logo" onclick="navigate('/')">
+    <svg width="34" height="34" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="nlg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#A78BFA"/><stop offset="100%" stop-color="#38BDF8"/></linearGradient></defs>
+      <line x1="2" y1="18" x2="10" y2="18" stroke="#CBD5E1" stroke-width="1.5" stroke-linecap="round"/>
+      <polygon points="10,4 10,32 22,18" fill="url(#nlg)" opacity="0.85"/>
+      <polygon points="10,4 22,18 16,4" fill="#EDE9FE" opacity="0.6"/>
+      <polygon points="10,4 10,32 22,18" fill="none" stroke="#A78BFA" stroke-width="0.8"/>
+      <line x1="22" y1="18" x2="34" y2="8"  stroke="#7C3AED" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="22" y1="18" x2="34" y2="13" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="22" y1="18" x2="34" y2="18" stroke="#0891B2" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="22" y1="18" x2="34" y2="23" stroke="#059669" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="22" y1="18" x2="34" y2="28" stroke="#10B981" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <span class="nav-brand">PrismOps</span>
+  </div>
+  <div class="nav-links">
+    <a href="/" data-page="/">Home</a>
+    <a href="/services" data-page="/services">Services</a>
+    <a href="/projects" data-page="/projects">Projects</a>
+    <a href="/about" data-page="/about">About</a>
+    <a href="/pricing" data-page="/pricing">Pricing</a>
+    <a href="/labs" data-page="/labs" class="nav-active">Labs</a>
+    <a href="/contact" data-page="/contact" class="nav-cta">Get in touch</a>
+  </div>
+  <div class="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-grid"></div>
+  <div class="page-hero-inner">
+    <span class="sec-eyebrow reveal">AI Labs</span>
+    <h1 class="sec-title reveal" style="font-size:clamp(36px,6vw,68px);letter-spacing:-3px;">Experimental<br>&amp; Active Products</h1>
+    <p class="sec-body reveal">Welcome to AI Labs — a sandbox of next-generation enterprise applications, automation tools, and productivity pipelines built by the PrismOps R&amp;D team.</p>
+  </div>
+</div>
+
+<section style="background:var(--bg2);">
+  <div class="container">
+    <div class="labs-grid">
+      <!-- Prism Automation Featured Card -->
+      <div class="lab-featured-card reveal">
+        <div class="lab-card-content">
+          <div class="lab-badge">Active Webapp</div>
+          <h2 class="lab-title">Prism <span class="grad-text">Automation</span></h2>
+          <p class="lab-desc">An intelligent Next-generation Resume Optimization and Automated Job Application tracking platform. Leverage the power of deep analysis to cross-examine and align resumes with target job descriptions, rewrite critical bullet points with quantified business impact, track job tracker logs, and sync directly with Google Drive integration.</p>
+          
+          <div class="lab-specs">
+            <div class="spec-item">
+              <span class="spec-label">Tech Stack</span>
+              <span class="spec-val">Next.js, NextAuth, Google Drive API</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Core Engine</span>
+              <span class="spec-val">DeepSeek Chat API / gpt-4o</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Permissions</span>
+              <span class="spec-val">Isolated Drive appDataFolder</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Release Version</span>
+              <span class="spec-val">v1.2 (Active Production)</span>
+            </div>
+          </div>
+          
+          <a href="/labs/prismautomation" target="_blank" class="launch-btn">
+            Launch Prism Automation &rarr;
+          </a>
+        </div>
+        
+        <div class="lab-card-preview">
+          <div class="prism-svg-box">
+            <!-- Representing the SVG / Abstract branding of Prism Automation -->
+            <svg width="180" height="180" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="prismG" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#A78BFA" />
+                  <stop offset="100%" stop-color="#38BDF8" />
+                </linearGradient>
+              </defs>
+              <line x1="2" y1="18" x2="10" y2="18" stroke="#CBD5E1" stroke-width="1.2" stroke-linecap="round" />
+              <polygon points="10,4 10,32 22,18" fill="url(#prismG)" opacity="0.85" />
+              <polygon points="10,4 22,18 16,4" fill="#EDE9FE" opacity="0.6" />
+              <polygon points="10,4 10,32 22,18" fill="none" stroke="#A78BFA" stroke-width="0.8" />
+              <line x1="22" y1="18" x2="34" y2="8" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" />
+              <line x1="22" y1="18" x2="34" y2="13" stroke="#2563EB" stroke-width="2" stroke-linecap="round" />
+              <line x1="22" y1="18" x2="34" y2="18" stroke="#0891B2" stroke-width="2" stroke-linecap="round" />
+              <line x1="22" y1="18" x2="34" y2="23" stroke="#059669" stroke-width="2" stroke-linecap="round" />
+              <line x1="22" y1="18" x2="34" y2="28" stroke="#10B981" stroke-width="1.8" stroke-linecap="round" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="fbrand">
+        <div class="footer-brand-mark">
+          <svg width="30" height="30" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="flg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#A78BFA"/><stop offset="100%" stop-color="#38BDF8"/></linearGradient></defs>
+            <line x1="2" y1="18" x2="10" y2="18" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-linecap="round"/>
+            <polygon points="10,4 10,32 22,18" fill="url(#flg)" opacity="0.9"/>
+            <polygon points="10,4 22,18 16,4" fill="rgba(167,139,250,0.25)"/>
+            <polygon points="10,4 10,32 22,18" fill="none" stroke="rgba(167,139,250,0.6)" stroke-width="0.8"/>
+            <line x1="22" y1="18" x2="34" y2="8"  stroke="#7C3AED" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="22" y1="18" x2="34" y2="13" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="22" y1="18" x2="34" y2="18" stroke="#0891B2" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="22" y1="18" x2="34" y2="23" stroke="#059669" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="22" y1="18" x2="34" y2="28" stroke="#10B981" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <span class="footer-brand-name">PrismOps</span>
+        </div>
+        <p>AI Automation &amp; Research Development company. India operations. USA research center. Global clients.</p>
+      </div>
+      <div class="fcol">
+        <h4>Pages</h4>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/services">Services</a></li>
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/labs">Labs</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="fcol">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/services">AI Automation</a></li>
+          <li><a href="/services">Custom AI Products</a></li>
+          <li><a href="/services">LLM Integration</a></li>
+          <li><a href="/services">AI Research</a></li>
+          <li><a href="/services">Data Analytics</a></li>
+        </ul>
+      </div>
+      <div class="fcol">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="mailto:Hr@prismopss.com">Hr@prismopss.com</a></li>
+          <li><a href="https://linkedin.com/company/prismops" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://twitter.com/prismops" target="_blank" rel="noopener">Twitter / X</a></li>
+          <li><a href="https://github.com/prismops" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://calendar.app.google/HfcnjedMsDiP73Ff6" target="_blank" rel="noopener">Book a call</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bot">
+      <span>&copy; 2026 PrismOps Technologies Pvt Ltd &amp; PrismOps LLC. All rights reserved.</span>
+      <span>
+        <span class="spdot" style="background:#7C3AED;"></span>
+        <span class="spdot" style="background:#2563EB;"></span>
+        <span class="spdot" style="background:#0891B2;"></span>
+        <span class="spdot" style="background:#059669;"></span>
+        <span class="spdot" style="background:#10B981;"></span>
+        <span class="spdot" style="background:#F59E0B;"></span>
+        &nbsp;See Every Angle.
+      </span>
+      <span><a href="#" style="color:rgba(255,255,255,0.3);margin-right:1.5rem;">Privacy</a><a href="#" style="color:rgba(255,255,255,0.3);">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<div class="spectrum-line" style="position:static;"></div>
+<script src="shared.js"></script>
+</body>
+</html>

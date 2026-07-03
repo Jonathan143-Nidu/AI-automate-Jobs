@@ -1,122 +1,144 @@
-import { useState, useEffect, useCallback } from 'react';
+/**
+ * hooks/useProfile.ts  — FIXED VERSION
+ *
+ * Changes from original:
+ * 1. Removed localStorage (not persistent across devices, breaks in SSR)
+ * 2. Fixed `setState synchronously inside useEffect` lint error —
+ *    the fetch now sets state in its own async callback, not in the effect body
+ * 3. Added proper loading + error states
+ * 4. Added `updateProfile` mutation helper
+ */
 
-const PROFILE_KEY = 'resume-maker-profile-v1';
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { UserProfile } from "@/lib/services/storage-service";
+export type { UserProfile };
 
-export interface UserResume {
-    name: string;
-    data: string; // base64
-    type: 'docx' | 'pdf' | 'txt';
+// Minimal shape returned by getPrimaryResume — extend if UserProfile.resumes has a richer type
+export interface StoredResume {
+  id: string;
+  name: string;
+  data: string; // base64 or raw text content
+  type: 'docx' | 'pdf' | 'txt';
+  [key: string]: unknown;
 }
 
-export interface UserProfile {
-    firstName: string;
-    lastName: string;
-    role: string;
-    location: string;
-    email: string;
-    phone: string;
-    linkedinURL: string;
-    bachelorDegree: string;
-    masterDegree: string;
-    visaType: string;
-    visaExpiry: string;
-    passportNumber: string;
-    interviewSlots: string;
-    interviewMode: string;
-    resumes: UserResume[];
+export interface ProfileError {
+  type: "permission" | "unknown";
+  message: string;
+  requiresReauth?: boolean;
 }
 
-const DEFAULT_PROFILE: UserProfile = {
-    firstName: '',
-    lastName: '',
-    role: '',
-    location: '',
-    email: '',
-    phone: '',
-    linkedinURL: '',
-    bachelorDegree: '',
-    masterDegree: '',
-    visaType: '',
-    visaExpiry: '',
-    passportNumber: '',
-    interviewSlots: '',
-    interviewMode: '',
-    resumes: []
-};
+interface UseProfileReturn {
+  profile: UserProfile | null;
+  loading: boolean;
+  isLoaded: boolean;
+  error: ProfileError | null;
+  updateProfile: (changes: Partial<UserProfile>) => Promise<void>;
+  addResume: (name: string, data: string, type: 'docx' | 'pdf' | 'txt') => Promise<void>;
+  deleteResume: () => Promise<void>;
+  refresh: () => void;
+  getPrimaryResume: () => StoredResume | null;
+}
 
-// Global State Singleton to ensure all hooks stay in sync
-let globalProfile: UserProfile = DEFAULT_PROFILE;
-let listeners: Array<(profile: UserProfile) => void> = [];
+export function useProfile(): UseProfileReturn {
+  // isLoaded is true once the first fetch attempt (success or error) completes
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<ProfileError | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
 
-const notifyListeners = () => {
-    listeners.forEach(listener => listener(globalProfile));
-};
+  const fetchProfile = useCallback(async () => {
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
 
-export const useProfile = () => {
-    const [profile, setProfile] = useState<UserProfile>(globalProfile);
-    const [isLoaded, setIsLoaded] = useState(false);
+    setLoading(true);
+    setError(null);
 
-    useEffect(() => {
-        // Init from localStorage only if global is still default
-        if (globalProfile === DEFAULT_PROFILE) {
-            const saved = localStorage.getItem(PROFILE_KEY);
-            if (saved) {
-                try {
-                    globalProfile = JSON.parse(saved);
-                    setProfile(globalProfile);
-                } catch (e) {
-                    console.error('Failed to parse profile', e);
-                }
-            }
+    try {
+      const res = await fetch("/api/profile", { signal: controller.signal });
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        const err = new Error(errData.error || `HTTP ${res.status}`);
+        (err as any).status = res.status;
+        throw err;
+      }
+      const data = (await res.json()) as { profile: UserProfile };
+      // ✅ setState inside async callback — not directly in effect body
+      setProfile(data.profile);
+    } catch (err) {
+      if ((err as Error).name !== "AbortError") {
+        const status = (err as any).status;
+        if (status === 403) {
+          setError({
+            type: "permission",
+            message: "Missing Google Drive permissions. Please sign out and sign back in to update permissions.",
+            requiresReauth: true,
+          });
         } else {
-            setProfile(globalProfile);
+          setError({
+            type: "unknown",
+            message: "Failed to load profile. Please try again later.",
+            requiresReauth: false,
+          });
         }
-        
-        setIsLoaded(true);
+        console.error("[useProfile]", err);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-        const handleChange = (newProfile: UserProfile) => {
-            setProfile(newProfile);
-        };
+  // ✅ Effect only starts the fetch — state is set inside the async fn above
+  useEffect(() => {
+    fetchProfile();
+    return () => abortRef.current?.abort();
+  }, [fetchProfile]);
 
-        listeners.push(handleChange);
-        return () => {
-            listeners = listeners.filter(l => l !== handleChange);
-        };
-    }, []);
+  const updateProfile = useCallback(async (changes: Partial<UserProfile>) => {
+    const res = await fetch("/api/profile", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(changes),
+    });
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      const err = new Error(errData.error || "Failed to update profile");
+      (err as any).status = res.status;
+      throw err;
+    }
+    const data = (await res.json()) as { profile: UserProfile };
+    setProfile(data.profile);
+  }, []);
 
-    const saveProfile = useCallback((newProfile: UserProfile) => {
-        globalProfile = newProfile;
-        localStorage.setItem(PROFILE_KEY, JSON.stringify(newProfile));
-        notifyListeners();
-    }, []);
+  const addResume = useCallback(async (name: string, data: string, type: 'docx' | 'pdf' | 'txt') => {
+    const newResume = { name, data, type };
+    await updateProfile({ resumes: [newResume] } as any);
+  }, [updateProfile]);
 
-    const updateProfile = useCallback((updates: Partial<UserProfile>) => {
-        const newProfile = { ...globalProfile, ...updates };
-        saveProfile(newProfile);
-    }, [saveProfile]);
+  const deleteResume = useCallback(async () => {
+    await updateProfile({ resumes: [] } as any);
+  }, [updateProfile]);
 
-    const addResume = useCallback((name: string, data: string, type: 'docx' | 'pdf' | 'txt') => {
-        const newResume: UserResume = { name, data, type };
-        updateProfile({ resumes: [newResume] });
-    }, [updateProfile]);
+  /**
+   * Returns the first resume in the profile, or null if none exist.
+   * Stable reference — safe to call during render (does not trigger re-renders).
+   */
+  const getPrimaryResume = useCallback((): StoredResume | null => {
+    const resumes = (profile as unknown as { resumes?: StoredResume[] })?.resumes;
+    if (!resumes || resumes.length === 0) return null;
+    return resumes[0];
+  }, [profile]);
 
-    const deleteResume = useCallback(() => {
-        updateProfile({ resumes: [] });
-    }, [updateProfile]);
-
-    const getPrimaryResume = useCallback(() => {
-        return globalProfile.resumes[0];
-    }, []);
-
-    return {
-        profile,
-        updateProfile,
-        addResume,
-        deleteResume,
-        getPrimaryResume,
-        isLoaded,
-        initials: (profile.firstName && profile.lastName) 
-            ? `${profile.firstName.charAt(0)}${profile.lastName.charAt(0)}`.toUpperCase() 
-            : 'U'
-    };
-};
+  return {
+    profile,
+    loading,
+    isLoaded: !loading,
+    error,
+    updateProfile,
+    addResume,
+    deleteResume,
+    refresh: fetchProfile,
+    getPrimaryResume,
+  };
+}

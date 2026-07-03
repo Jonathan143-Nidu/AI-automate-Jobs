@@ -6,8 +6,8 @@ const fontSans = "Inter, system-ui, -apple-system, sans-serif";
 const fontMono = "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace";
 
 export const metadata: Metadata = {
-    title: "Innov-AI | Intelligent Resume Optimization",
-    description: "Optimize your resume for any job description using AI. Built for Innovcentric.",
+    title: "Prism Automation | Intelligent Resume Optimization",
+    description: "Optimize your resume for any job description using AI. Built for Prism Automation.",
 };
 
 import AuthProvider from "@/components/providers/AuthProvider";

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 // Force Rebuild: 2026-01-17 - Refactor candidateFiles
 import { auth } from '@/auth'; // Adjust path if auth.ts is elsewhere
-import { extractTextFromPdf } from '@/utils/pdf-parser';
+import { extractTextFromPdf } from '@/utils/pdf-extractor';
 import * as mammoth from 'mammoth';
 
 // Types for Drive API Responses

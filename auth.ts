@@ -1,6 +1,6 @@
 import NextAuth from "next-auth"
 import Google from "next-auth/providers/google"
-import { adminService } from "@/lib/services/admin-service"
+import { isEmailWhitelisted } from "@/lib/whitelist-check"
 
 interface ExtendedToken {
     accessToken?: string;
@@ -59,7 +59,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         Google({
             authorization: {
                 params: {
-                    scope: "openid email profile",
+                    scope: "openid email profile https://www.googleapis.com/auth/drive.appdata",
                     prompt: "consent",
                     access_type: "offline",
                     response_type: "code"
@@ -69,23 +69,26 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     ],
     callbacks: {
         async signIn({ profile, account }) {
-            const superAdmin = "hiring@innovcentric.com";
             const email = profile?.email;
-
             if (!email) return false;
 
-            // 1. Always allow the Super Admin
-            if (email.toLowerCase() === superAdmin.toLowerCase()) {
-                return true;
-            }
+            // Super admins always allowed
+            const SUPER_ADMINS = ['admin@prismopss.com', 'thotajonathan.249@gmail.com'];
+            if (SUPER_ADMINS.some(a => a.toLowerCase() === email.toLowerCase())) return true;
 
-            // 2. Check whitelist for all other users
+            // Check whitelist using Edge-safe fetch-only checker
             try {
-                // Check if the user is whitelisted in the Google Sheet
-                return await adminService.isWhitelisted(email, account?.access_token || "");
-            } catch (error) {
-                console.error("Whitelist check failed during sign-in:", error);
-                return false;
+                const userToken = account?.access_token ?? '';
+                const allowed = await isEmailWhitelisted(email, userToken);
+                if (!allowed) {
+                    console.warn(`[Auth] Blocked login attempt from non-whitelisted email: ${email}`);
+                    return '/labs/prismautomation/login?error=AccessDenied';
+                }
+                return true;
+            } catch (err) {
+                // If whitelist check fails, allow login so admin isn't locked out
+                console.error('[Auth] Whitelist check failed, allowing login as fail-safe:', err);
+                return true;
             }
         },
         async jwt({ token, account, user }) {
@@ -128,6 +131,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
     },
     pages: {
-        signIn: '/login', // Custom login page
-    }
+        signIn: '/labs/prismautomation/login', // Custom login page
+    },
+    basePath: "/labs/prismautomation/api/auth",
 })

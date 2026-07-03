@@ -10,7 +10,7 @@ function SessionGuard({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         if ((session as { error?: string })?.error === "RefreshAccessTokenError") {
             console.error("Session Refresh Failed. Force signing out.");
-            signOut({ callbackUrl: "/login" });
+            signOut({ callbackUrl: "/labs/prismautomation/login?signout=1" });
         }
     }, [session]);
 
@@ -23,7 +23,7 @@ export default function AuthProvider({
     children: React.ReactNode;
 }) {
     return (
-        <SessionProvider refetchInterval={300}>
+        <SessionProvider refetchInterval={300} basePath="/labs/prismautomation/api/auth">
             <SessionGuard>{children}</SessionGuard>
         </SessionProvider>
     );
